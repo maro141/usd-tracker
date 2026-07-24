@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>USD Tracker — srpanj 2026.</title>
+<title>USD Tracker — Auto</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -40,6 +40,20 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    background: #34c759;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
   }
   .metric-row {
     display: flex;
@@ -63,21 +77,15 @@
     font-weight: 500;
     margin-top: 2px;
   }
+  .metric-date {
+    font-size: 11px;
+    color: #c7c7cc;
+    margin-top: 2px;
+  }
   .up { color: #34c759; }
   .down { color: #ff3b30; }
   .neutral { color: #8e8e93; }
 
-  /* Mini sparkline */
-  .sparkline {
-    margin-top: 8px;
-    height: 32px;
-  }
-  .sparkline svg {
-    width: 100%;
-    height: 100%;
-  }
-
-  /* Converter */
   .converter {
     display: flex;
     align-items: center;
@@ -124,7 +132,6 @@
     color: #007aff;
   }
 
-  /* Scenarios */
   .scenario {
     display: flex;
     align-items: center;
@@ -173,7 +180,6 @@
   .impact-down { color: #ff3b30; }
   .impact-up { color: #34c759; }
 
-  /* Fed box */
   .fed-row {
     display: flex;
     justify-content: space-between;
@@ -192,6 +198,16 @@
     margin-top: 4px;
   }
 
+  .loading {
+    color: #8e8e93;
+    font-size: 13px;
+    font-style: italic;
+  }
+  .error {
+    color: #ff3b30;
+    font-size: 12px;
+  }
+
   .update-time {
     text-align: center;
     font-size: 11px;
@@ -199,44 +215,35 @@
     margin-top: 16px;
   }
 </style>
+<base target="_blank">
 </head>
 <body>
 
 <h1>USD Tracker</h1>
-<p class="subtitle">Podaci: 24. srpnja 2026. — FOMC 28–29. srpnja</p>
+<p class="subtitle">Auto-ažuriranje — FOMC 28–29. srpnja</p>
 
-<!-- Glavne metrike -->
+<!-- Glavne metrike — auto ažuriranje -->
 <div class="card">
-  <div class="card-title">Trenutno stanje</div>
+  <div class="card-title"><span class="live-dot"></span> Uživo podaci</div>
   <div class="metric-row">
     <div class="metric">
       <div class="metric-name">EUR/USD</div>
-      <div class="metric-value">1,0850</div>
-      <div class="metric-change down">▼ –1,1% ovaj mjesec</div>
-      <div class="sparkline">
-        <svg viewBox="0 0 200 32" preserveAspectRatio="none">
-          <polyline fill="none" stroke="#ff3b30" stroke-width="2" stroke-linecap="round"
-            points="0,6 22,8 44,10 66,9 88,12 110,14 132,16 154,19 176,22 200,26"/>
-        </svg>
-      </div>
+      <div class="metric-value" id="eurusd">1,0850</div>
+      <div class="metric-change" id="eurusdChange">Učitavanje...</div>
+      <div class="metric-date" id="eurusdDate"></div>
     </div>
     <div class="metric">
       <div class="metric-name">2Y Treasury</div>
-      <div class="metric-value">4,35%</div>
-      <div class="metric-change up">▲ +4,3% ovaj mjesec</div>
-      <div class="sparkline">
-        <svg viewBox="0 0 200 32" preserveAspectRatio="none">
-          <polyline fill="none" stroke="#34c759" stroke-width="2" stroke-linecap="round"
-            points="0,26 22,24 44,22 66,20 88,18 110,15 132,13 154,11 176,8 200,5"/>
-        </svg>
-      </div>
+      <div class="metric-value" id="treasury">4,35%</div>
+      <div class="metric-change" id="treasuryChange">Učitavanje...</div>
+      <div class="metric-date" id="treasuryDate"></div>
     </div>
   </div>
 </div>
 
-<!-- FED podaci -->
+<!-- FED podaci — statički, mijenja se rijetko -->
 <div class="card">
-  <div class="card-title">Federal Reserve</div>
+  <div class="card-title">Federal Reserve (zadnji FOMC)</div>
   <div class="fed-row">
     <span class="fed-label">Fed funds rate</span>
     <span class="fed-val">3,50 – 3,75%</span>
@@ -246,13 +253,10 @@
     <span class="fed-val">3,65%</span>
   </div>
   <div class="fed-row">
-    <span class="fed-label">2Y prinos</span>
-    <span class="fed-val">4,35%</span>
-  </div>
-  <div class="fed-row">
     <span class="fed-label">Sljedeći FOMC</span>
     <span class="fed-val">28–29. srpnja</span>
   </div>
+  <p class="note" style="margin-top:8px;">Fed funds rate se ažurira ručno nakon svakog FOMC sastanka (svakih 6–8 tjedana).</p>
 </div>
 
 <!-- Pretvornik -->
@@ -263,10 +267,10 @@
     <span>EUR</span>
   </div>
   <div class="result-box">
-    <span class="result-label">USD po tečaju 1,0850</span>
+    <span class="result-label">USD</span>
     <span class="result-value" id="usdResult">1.085,00</span>
   </div>
-  <p class="note">Ako dolar ojača na 1,05, tvojih 1.000 EUR vrijedit će samo 1.050 USD. Ako slabi na 1,12, vrijedit će 1.120 USD.</p>
+  <p class="note">Tečaj se automatski ažurira svakim otvaranjem stranice.</p>
 </div>
 
 <!-- Scenariji -->
@@ -299,8 +303,6 @@
     </div>
     <div class="scenario-impact impact-up">EUR/USD<br>1,10–1,11</div>
   </div>
-
-  <p class="note">Klikni na scenarij da ga označiš. Razlika kamata SAD–EU trenutno je ~1,5% u korist dolara.</p>
 </div>
 
 <!-- Objašnjenje -->
@@ -308,19 +310,61 @@
   <div class="card-title">Zašto dolar jača?</div>
   <p class="note">
     1. <strong>FED drži visoke kamate</strong> (3,50–3,75%) dok ECB stagnira (~2,50–2,75%).<br><br>
-    2. <strong>2-godišnji Treasury prinos</strong> (4,35%) privlači strani kapital u SAD — investitori kupuju dolare da bi kupili ove obveznice.<br><br>
-    3. <strong>"Safe haven" status</strong> — u geopolitičkoj nesigurnosti (Bliski istok, Ukrajina), svijet bježi u dolar.<br><br>
+    2. <strong>2-godišnji Treasury prinos</strong> privlači strani kapital u SAD — investitori kupuju dolare da bi kupili ove obveznice.<br><br>
+    3. <strong>"Safe haven" status</strong> — u geopolitičkoj nesigurnosti svijet bježi u dolar.<br><br>
     4. <strong>2-godišnji prinos je termometar</strong> — prvi reagira na FED-ove odluke i najjače utječe na kratkoročni tečaj.
   </p>
 </div>
 
-<p class="update-time">Zadnje ažuriranje: 24. srpnja 2026. — podaci su statički, ne ažuriraju se automatski</p>
+<p class="update-time">EUR/USD i Treasury: auto-ažuriranje | Fed rate: ručno nakon FOMC</p>
 
 <script>
+  let currentRate = 1.0850;
+
+  // Dohvati EUR/USD tečaj
+  async function fetchExchangeRate() {
+    try {
+      const res = await fetch('https://api.exchangerate-api.com/v4/latest/EUR');
+      const data = await res.json();
+      const rate = data.rates.USD;
+      currentRate = rate;
+
+      document.getElementById('eurusd').textContent = rate.toFixed(4).replace('.', ',');
+      document.getElementById('eurusdChange').textContent = 'Ažurirano: ' + new Date().toLocaleDateString('hr-HR');
+      document.getElementById('eurusdChange').className = 'metric-change neutral';
+      document.getElementById('eurusdDate').textContent = 'Izvor: exchangerate-api.com';
+
+      // Ažuriraj i pretvornik
+      convert();
+    } catch (e) {
+      document.getElementById('eurusdChange').textContent = 'Offline — zadnji poznati: 1,0850';
+      document.getElementById('eurusdChange').className = 'metric-change error';
+    }
+  }
+
+  // Dohvati 2Y Treasury prinos s US Treasury API-ja
+  async function fetchTreasury() {
+    try {
+      const url = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/daily_treasury_yield_curve?fields=record_date,y2&sort=-record_date&page[size]=1';
+      const res = await fetch(url);
+      const data = await res.json();
+      const record = data.data[0];
+      const yieldVal = parseFloat(record.y2);
+      const date = record.record_date;
+
+      document.getElementById('treasury').textContent = yieldVal.toFixed(2).replace('.', ',') + '%';
+      document.getElementById('treasuryChange').textContent = 'Ažurirano: ' + new Date(date).toLocaleDateString('hr-HR');
+      document.getElementById('treasuryChange').className = 'metric-change neutral';
+      document.getElementById('treasuryDate').textContent = 'Izvor: treasury.gov';
+    } catch (e) {
+      document.getElementById('treasuryChange').textContent = 'Offline — zadnji poznati: 4,35%';
+      document.getElementById('treasuryChange').className = 'metric-change error';
+    }
+  }
+
   function convert() {
     const eur = parseFloat(document.getElementById('eurInput').value) || 0;
-    const rate = 1.0850;
-    const usd = eur * rate;
+    const usd = eur * currentRate;
     document.getElementById('usdResult').textContent = usd.toLocaleString('hr-HR', {
       minimumFractionDigits: 2, maximumFractionDigits: 2
     });
@@ -330,6 +374,10 @@
     document.querySelectorAll('.scenario').forEach(s => s.classList.remove('active'));
     el.classList.add('active');
   }
+
+  // Pokreni odmah
+  fetchExchangeRate();
+  fetchTreasury();
 </script>
 
 </body>
