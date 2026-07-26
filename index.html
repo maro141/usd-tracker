@@ -8,308 +8,117 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background: #f2f2f7;
+    background: #e8e8ed;
     color: #1c1c1e;
     line-height: 1.5;
-    padding: 24px;
+    padding: 16px;
   }
-  .page-wrap {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
+  .page-wrap { max-width: 1100px; margin: 0 auto; }
   header {
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 8px;
   }
-  h1 {
-    font-size: 26px;
-    font-weight: 600;
-    margin-bottom: 4px;
-    letter-spacing: -0.5px;
+  h1 { font-size: 24px; font-weight: 600; letter-spacing: -0.3px; }
+  .subtitle { font-size: 13px; color: #8e8e93; margin-top: 2px; }
+  .live-badge {
+    font-size: 11px; font-weight: 600; color: #34c759; background: #e8f5e9;
+    padding: 4px 10px; border-radius: 20px; display: flex; align-items: center; gap: 5px;
   }
-  .subtitle {
-    font-size: 14px;
-    color: #8e8e93;
+  .live-badge::before {
+    content: ""; width: 6px; height: 6px; background: #34c759; border-radius: 50%;
+    animation: blink 1s infinite;
   }
-  .refresh-badge {
-    font-size: 11px;
-    font-weight: 600;
-    color: #34c759;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    background: #e8f5e9;
-    padding: 4px 10px;
-    border-radius: 20px;
-  }
-  .refresh-badge::before {
-    content: "";
-    width: 6px;
-    height: 6px;
-    background: #34c759;
-    border-radius: 50%;
-    animation: pulse 1s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.3; transform: scale(0.7); }
-  }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 16px;
-  }
-  @media (min-width: 900px) {
-    .grid { grid-template-columns: repeat(2, 1fr); }
+  .grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  @media (min-width: 768px) {
+    .grid { grid-template-columns: 1fr 1fr; }
+    .span-2 { grid-column: span 2; }
   }
 
   .card {
-    background: #fff;
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-    display: flex;
-    flex-direction: column;
+    background: #fff; border-radius: 14px; padding: 18px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
   }
-  .card-full { grid-column: 1 / -1; }
   .card-title {
-    font-size: 11px;
-    font-weight: 600;
-    color: #8e8e93;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .live-dot {
-    width: 7px;
-    height: 7px;
-    background: #34c759;
-    border-radius: 50%;
-    animation: pulse 1.5s infinite;
+    font-size: 11px; font-weight: 600; color: #8e8e93;
+    text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 14px;
+    display: flex; justify-content: space-between; align-items: center;
   }
 
-  /* Metrics */
-  .metric-row {
-    display: flex;
-    gap: 16px;
-  }
-  .metric {
-    flex: 1;
-  }
-  .metric-name {
-    font-size: 13px;
-    color: #636366;
-    margin-bottom: 4px;
-  }
-  .metric-value {
-    font-size: 30px;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-    transition: all 0.15s ease;
-  }
-  .metric-value.flash-up {
-    color: #34c759;
-    transform: scale(1.05);
-  }
-  .metric-value.flash-down {
-    color: #ff3b30;
-    transform: scale(1.05);
-  }
-  .metric-change {
-    font-size: 12px;
-    font-weight: 500;
-    margin-top: 4px;
-  }
-  .metric-date {
-    font-size: 11px;
-    color: #c7c7cc;
-    margin-top: 3px;
-  }
-  .up { color: #34c759; }
-  .down { color: #ff3b30; }
-  .neutral { color: #8e8e93; }
-
-  /* Live Chart Canvas */
-  .chart-card {
-    position: relative;
-    padding: 16px 20px 12px 20px;
-  }
-  .chart-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-  }
-  .chart-price {
-    font-size: 36px;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-    transition: color 0.15s;
-    letter-spacing: -0.5px;
-  }
-  .chart-price.up { color: #34c759; }
-  .chart-price.down { color: #ff3b30; }
-  .chart-pill {
-    font-size: 12px;
-    font-weight: 600;
-    padding: 4px 12px;
-    border-radius: 14px;
-  }
-  .chart-pill.up { background: #e8f5e9; color: #34c759; }
-  .chart-pill.down { background: #ffebee; color: #ff3b30; }
-  .chart-canvas-wrap {
-    position: relative;
-    width: 100%;
-    height: 260px;
+  /* TradingView widgets grid */
+  .tv-widgets-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  @media (min-width: 768px) { .tv-widgets-grid { grid-template-columns: repeat(3, 1fr); } }
+  .tv-widget-box {
+    background: #f9f9fb;
     border-radius: 10px;
     overflow: hidden;
-    background: #fafafa;
-  }
-  #liveChart {
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-  .chart-info {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 8px;
-    font-size: 11px;
-    color: #8e8e93;
+    min-height: 120px;
   }
 
-  /* Fed rows */
-  .fed-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 7px 0;
-    border-bottom: 1px solid #f2f2f7;
-    font-size: 14px;
-  }
-  .fed-row:last-child { border-bottom: none; }
-  .fed-label { color: #636366; }
-  .fed-val { font-weight: 500; font-variant-numeric: tabular-nums; }
-
-  /* Embed */
-  .embed-wrap {
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid #e5e5ea;
-    flex: 1;
-    min-height: 380px;
-  }
-  .embed-wrap iframe {
-    width: 100%;
-    height: 100%;
-    min-height: 380px;
-    border: none;
-    display: block;
+  .tv-box {
+    width: 100%; height: 420px; border: 1px solid #e5e5ea;
+    border-radius: 10px; overflow: hidden; background: #fff;
   }
 
-  /* News */
-  .news-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  .fed-line {
+    display: flex; justify-content: space-between; padding: 7px 0;
+    border-bottom: 1px solid #f2f2f7; font-size: 14px;
   }
-  .news-item {
-    padding: 8px 0;
-    border-bottom: 1px solid #f2f2f7;
+  .fed-line:last-child { border-bottom: none; }
+  .fed-k { color: #636366; }
+  .fed-v { font-weight: 500; font-variant-numeric: tabular-nums; }
+
+  .cal-box {
+    width: 100%; height: 360px; border: 1px solid #e5e5ea;
+    border-radius: 10px; overflow: hidden; background: #f9f9fb;
+    display: flex; align-items: center; justify-content: center;
   }
+  .cal-box iframe { width: 100%; height: 100%; border: none; }
+  .cal-fallback { text-align: center; padding: 40px 20px; color: #8e8e93; font-size: 13px; }
+  .cal-fallback a { color: #007aff; text-decoration: none; }
+
+  .news-item { padding: 9px 0; border-bottom: 1px solid #f2f2f7; }
   .news-item:last-child { border-bottom: none; }
   .news-title {
-    font-size: 14px;
-    font-weight: 500;
-    color: #1c1c1e;
-    text-decoration: none;
-    display: block;
-    line-height: 1.4;
+    font-size: 14px; font-weight: 500; color: #1c1c1e;
+    text-decoration: none; line-height: 1.35; display: block;
   }
   .news-title:hover { color: #007aff; }
-  .news-meta {
-    font-size: 11px;
-    color: #8e8e93;
-    margin-top: 3px;
-  }
-  .news-loading {
-    font-size: 13px;
-    color: #8e8e93;
-    font-style: italic;
-    padding: 8px 0;
-  }
-  .news-error {
-    font-size: 13px;
-    color: #ff3b30;
-    padding: 8px 0;
-  }
+  .news-meta { font-size: 11px; color: #8e8e93; margin-top: 3px; }
 
-  /* Scenarios */
   .scenario {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px;
-    border-radius: 10px;
-    border: 1.5px solid #e5e5ea;
-    margin-bottom: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
+    display: flex; align-items: center; gap: 10px; padding: 11px;
+    border-radius: 10px; border: 1.5px solid #e5e5ea; margin-bottom: 7px;
+    cursor: pointer; transition: all 0.15s ease;
   }
-  .scenario:hover {
-    border-color: #007aff;
-    background: #f5f5f7;
-  }
-  .scenario.active {
-    border-color: #007aff;
-    background: #eef4ff;
-  }
-  .scenario-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .dot-blue { background: #007aff; }
-  .dot-red { background: #ff3b30; }
-  .dot-green { background: #34c759; }
-  .scenario-text { flex: 1; }
-  .scenario-title {
-    font-size: 14px;
-    font-weight: 500;
-  }
-  .scenario-desc {
-    font-size: 12px;
-    color: #8e8e93;
-    margin-top: 1px;
-  }
-  .scenario-impact {
-    text-align: right;
-    font-size: 13px;
-    font-weight: 600;
-  }
-  .impact-down { color: #ff3b30; }
-  .impact-up { color: #34c759; }
+  .scenario:hover { border-color: #007aff; background: #f5f5f7; }
+  .scenario.active { border-color: #007aff; background: #eef4ff; }
+  .sc-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .sc-blue { background: #007aff; }
+  .sc-red { background: #ff3b30; }
+  .sc-green { background: #34c759; }
+  .sc-text { flex: 1; }
+  .sc-title { font-size: 14px; font-weight: 500; }
+  .sc-desc { font-size: 12px; color: #8e8e93; margin-top: 1px; }
+  .sc-impact { text-align: right; font-size: 13px; font-weight: 600; }
 
-  .note {
-    font-size: 12px;
-    color: #8e8e93;
-    line-height: 1.5;
-    margin-top: 6px;
+  .note { font-size: 12px; color: #8e8e93; line-height: 1.5; margin-top: 6px; }
+  .explain-text { font-size: 13px; color: #3a3a3c; line-height: 1.65; }
+  .explain-text strong { color: #1c1c1e; font-weight: 600; }
+  .footer { text-align: center; font-size: 11px; color: #c7c7cc; margin-top: 20px; padding-bottom: 16px; }
+  .status-bar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .status-pill {
+    font-size: 11px; padding: 3px 10px; border-radius: 12px;
+    background: #f2f2f7; color: #636366;
   }
-  .update-time {
-    text-align: center;
-    font-size: 11px;
-    color: #c7c7cc;
-    margin-top: 24px;
-    padding-bottom: 20px;
-  }
+  .status-pill.ok { background: #e8f5e9; color: #34c759; }
 </style>
+<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -319,146 +128,220 @@
 <header>
   <div>
     <h1>USD Tracker</h1>
-    <p class="subtitle">Auto-ažuriranje — FOMC 28–29. srpnja</p>
+    <div class="subtitle">FOMC 28–29. srpnja 2026.</div>
   </div>
-  <div class="refresh-badge">Live</div>
+  <div class="live-badge">Live</div>
 </header>
+
+<div class="status-bar">
+  <div class="status-pill ok">Podaci: TradingView (uživo)</div>
+  <div class="status-pill" id="stNews">Vijesti: učitavanje...</div>
+</div>
 
 <div class="grid">
 
-  <!-- Live Chart Card -->
-  <div class="card card-full chart-card">
-    <div class="chart-header">
-      <div>
-        <div class="card-title" style="margin-bottom:4px;"><span class="live-dot"></span> EUR/USD uživo</div>
-        <div class="chart-price" id="chartPrice">—</div>
+  <!-- BRZI PODACI — TradingView widgeti -->
+  <div class="card span-2">
+    <div class="card-title">
+      <span>Brzi podaci — uživo</span>
+      <span style="font-size:10px;color:#c7c7cc;text-transform:none;">Izvor: TradingView</span>
+    </div>
+    <div class="tv-widgets-grid">
+
+      <!-- EUR/USD -->
+      <div class="tv-widget-box">
+        <div class="tradingview-widget-container" style="height:100%;width:100%;">
+          <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+          {
+            "symbol": "OANDA:EURUSD",
+            "width": "100%",
+            "height": "100%",
+            "colorTheme": "light",
+            "isTransparent": true,
+            "locale": "en"
+          }
+          </script>
+        </div>
       </div>
-      <div class="chart-pill" id="chartPill">—</div>
-    </div>
-    <div class="chart-canvas-wrap">
-      <canvas id="liveChart"></canvas>
-    </div>
-    <div class="chart-info">
-      <span id="chartRange">Min: — | Max: —</span>
-      <span id="chartTime">Osvježava svake sekunde</span>
-    </div>
-  </div>
 
-  <!-- Metrike -->
-  <div class="card">
-    <div class="card-title">Brzi podaci</div>
-    <div class="metric-row">
-      <div class="metric">
-        <div class="metric-name">EUR/USD</div>
-        <div class="metric-value" id="eurusd">—</div>
-        <div class="metric-change" id="eurusdChange">Učitavanje...</div>
-        <div class="metric-date" id="eurusdDate"></div>
+      <!-- Zlato -->
+      <div class="tv-widget-box">
+        <div class="tradingview-widget-container" style="height:100%;width:100%;">
+          <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+          {
+            "symbol": "OANDA:XAUUSD",
+            "width": "100%",
+            "height": "100%",
+            "colorTheme": "light",
+            "isTransparent": true,
+            "locale": "en"
+          }
+          </script>
+        </div>
       </div>
-      <div class="metric">
-        <div class="metric-name">2Y Treasury</div>
-        <div class="metric-value" id="treasury">—</div>
-        <div class="metric-change" id="treasuryChange">Učitavanje...</div>
-        <div class="metric-date" id="treasuryDate"></div>
+
+      <!-- WTI Nafta -->
+      <div class="tv-widget-box">
+        <div class="tradingview-widget-container" style="height:100%;width:100%;">
+          <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+          {
+            "symbol": "TVC:USOIL",
+            "width": "100%",
+            "height": "100%",
+            "colorTheme": "light",
+            "isTransparent": true,
+            "locale": "en"
+          }
+          </script>
+        </div>
       </div>
+
+      <!-- DXY -->
+      <div class="tv-widget-box">
+        <div class="tradingview-widget-container" style="height:100%;width:100%;">
+          <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+          {
+            "symbol": "TVC:DXY",
+            "width": "100%",
+            "height": "100%",
+            "colorTheme": "light",
+            "isTransparent": true,
+            "locale": "en"
+          }
+          </script>
+        </div>
+      </div>
+
+      <!-- 10Y Treasury -->
+      <div class="tv-widget-box">
+        <div class="tradingview-widget-container" style="height:100%;width:100%;">
+          <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+          {
+            "symbol": "TVC:US10Y",
+            "width": "100%",
+            "height": "100%",
+            "colorTheme": "light",
+            "isTransparent": true,
+            "locale": "en"
+          }
+          </script>
+        </div>
+      </div>
+
+      <!-- USD/JPY (bonus) -->
+      <div class="tv-widget-box">
+        <div class="tradingview-widget-container" style="height:100%;width:100%;">
+          <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+          {
+            "symbol": "OANDA:USDJPY",
+            "width": "100%",
+            "height": "100%",
+            "colorTheme": "light",
+            "isTransparent": true,
+            "locale": "en"
+          }
+          </script>
+        </div>
+      </div>
+
     </div>
+    <p class="note">Sve cijene su stvarne i osvježavaju se automatski preko TradingView-a.</p>
   </div>
 
-  <!-- Fed podaci -->
+  <!-- TRADINGVIEW GRAF EUR/USD -->
   <div class="card">
-    <div class="card-title">Federal Reserve</div>
-    <div class="fed-row">
-      <span class="fed-label">Fed funds rate</span>
-      <span class="fed-val">3,50 – 3,75%</span>
-    </div>
-    <div class="fed-row">
-      <span class="fed-label">Kamata na rezerve</span>
-      <span class="fed-val">3,65%</span>
-    </div>
-    <div class="fed-row">
-      <span class="fed-label">2Y prinos</span>
-      <span class="fed-val">4,35%</span>
-    </div>
-    <div class="fed-row">
-      <span class="fed-label">Sljedeći FOMC</span>
-      <span class="fed-val">28–29. srpnja</span>
-    </div>
-    <p class="note">Fed funds rate se ažurira ručno nakon svakog FOMC sastanka.</p>
+    <div class="card-title">EUR/USD graf (TradingView)</div>
+    <div class="tv-box" id="tvChart"></div>
+    <p class="note">Profesionalni graf. Mijenjaj interval, zoomaj, dodaj indikatore.</p>
   </div>
 
-  <!-- TradingView graf — puna širina -->
-  <div class="card card-full">
-    <div class="card-title">EUR/USD detaljni graf (TradingView)</div>
-    <div class="embed-wrap" id="tvChart" style="min-height:420px;"></div>
-    <p class="note">TradingView profesionalni graf s indikatorima i alatima za analizu.</p>
-  </div>
-
-  <!-- Ekonomski kalendar -->
-  <div class="card">
-    <div class="card-title">Ekonomski kalendar</div>
-    <div class="embed-wrap">
-      <iframe src="https://sslecal2.investing.com?columns=exc_flags,exc_currency,exc_importance,exc_actual,exc_forecast,exc_previous&features=datepicker,timezone&countries=25,32,6,37,72,22,17,39,14,10,35,43,56,36,110,11,26,12,4,5&calType=week&timeZone=8&lang=1" scrolling="auto"></iframe>
-    </div>
-    <p class="note">Crvena = visoka važnost. SAD, EU, Japan, UK, Kina.</p>
-  </div>
-
-  <!-- Vijesti -->
+  <!-- VIJESTI UŽIVO -->
   <div class="card">
     <div class="card-title">Vijesti uživo</div>
-    <div id="newsContainer">
-      <div class="news-loading">Učitavanje vijesti...</div>
+    <div id="newsBox">
+      <div style="font-size:13px;color:#8e8e93;font-style:italic;padding:8px 0;">Učitavanje...</div>
     </div>
   </div>
 
-  <!-- Scenariji -->
+  <!-- FED -->
+  <div class="card">
+    <div class="card-title">Federal Reserve</div>
+    <div class="fed-line"><span class="fed-k">Fed funds rate</span><span class="fed-v">3,50 – 3,75%</span></div>
+    <div class="fed-line"><span class="fed-k">Kamata na rezerve</span><span class="fed-v">3,65%</span></div>
+    <div class="fed-line"><span class="fed-k">10Y prinos</span><span class="fed-v" id="fedTre">—</span></div>
+    <div class="fed-line"><span class="fed-k">Sljedeći FOMC</span><span class="fed-v">28–29. srpnja</span></div>
+    <p class="note">Kamate se ažuriraju ručno nakon FOMC sastanka.</p>
+  </div>
+
+  <!-- CALENDAR -->
+  <div class="card">
+    <div class="card-title">Ekonomski kalendar</div>
+    <div class="cal-box" id="calBox">
+      <div class="cal-fallback">
+        Ako se kalendar ne prikaže, klikni ovdje:<br><br>
+        <a href="https://sslecal2.investing.com?columns=exc_flags,exc_currency,exc_importance,exc_actual,exc_forecast,exc_previous&features=datepicker,timezone&countries=25,32,6,37,72,22,17,39,14,10,35,43,56,36,110,11,26,12,4,5&calType=week&timeZone=8&lang=1" target="_blank">
+          Otvori Investing.com kalendar
+        </a>
+      </div>
+    </div>
+    <p class="note">Crvena = visoka važnost. Ako iframe ne radi, koristi link iznad.</p>
+  </div>
+
+  <!-- SCENARIOS -->
   <div class="card">
     <div class="card-title">Scenariji FOMC 29. srpnja</div>
-
-    <div class="scenario active" onclick="pickScenario(this, 0)">
-      <div class="scenario-dot dot-blue"></div>
-      <div class="scenario-text">
-        <div class="scenario-title">Zadržati stope</div>
-        <div class="scenario-desc">Powell hawkish — očekuje se podizanje kasnije</div>
+    <div class="scenario active" onclick="sel(this)">
+      <div class="sc-dot sc-blue"></div>
+      <div class="sc-text">
+        <div class="sc-title">Zadržati stope</div>
+        <div class="sc-desc">Powell hawkish</div>
       </div>
-      <div class="scenario-impact impact-down">EUR/USD<br>1,07–1,08</div>
+      <div class="sc-impact" style="color:#ff3b30;">EUR/USD<br>1,07–1,08</div>
     </div>
-
-    <div class="scenario" onclick="pickScenario(this, 1)">
-      <div class="scenario-dot dot-red"></div>
-      <div class="scenario-text">
-        <div class="scenario-title">Podići na 3,75–4,00%</div>
-        <div class="scenario-desc">FED ozbiljniji nego što tržište očekuje</div>
+    <div class="scenario" onclick="sel(this)">
+      <div class="sc-dot sc-red"></div>
+      <div class="sc-text">
+        <div class="sc-title">Podići kamate</div>
+        <div class="sc-desc">Na 3,75–4,00%</div>
       </div>
-      <div class="scenario-impact impact-down">EUR/USD<br>~1,07</div>
+      <div class="sc-impact" style="color:#ff3b30;">EUR/USD<br>~1,07</div>
     </div>
-
-    <div class="scenario" onclick="pickScenario(this, 2)">
-      <div class="scenario-dot dot-green"></div>
-      <div class="scenario-text">
-        <div class="scenario-title">Signalizirati rezanje</div>
-        <div class="scenario-desc">Powell dovish — mekši stav prema inflaciji</div>
+    <div class="scenario" onclick="sel(this)">
+      <div class="sc-dot sc-green"></div>
+      <div class="sc-text">
+        <div class="sc-title">Signalizirati rezanje</div>
+        <div class="sc-desc">Powell dovish</div>
       </div>
-      <div class="scenario-impact impact-up">EUR/USD<br>1,10–1,11</div>
+      <div class="sc-impact" style="color:#34c759;">EUR/USD<br>1,10–1,11</div>
     </div>
   </div>
 
-  <!-- Objašnjenje — puna širina -->
-  <div class="card card-full">
+  <!-- ZASTO DOLAR JACA -->
+  <div class="card">
     <div class="card-title">Zašto dolar jača?</div>
-    <p class="note">
-      1. <strong>FED drži visoke kamate</strong> (3,50–3,75%) dok ECB stagnira (~2,50–2,75%).<br><br>
-      2. <strong>2-godišnji Treasury prinos</strong> privlači strani kapital u SAD — investitori kupuju dolare da bi kupili ove obveznice.<br><br>
-      3. <strong>"Safe haven" status</strong> — u geopolitičkoj nesigurnosti svijet bježi u dolar.<br><br>
-      4. <strong>2-godišnji prinos je termometar</strong> — prvi reagira na FED-ove odluke i najjače utječe na kratkoročni tečaj.
+    <p class="explain-text">
+      <strong>1.</strong> FED drži visoke kamate (3,50–3,75%) dok ECB stagnira (~2,50–2,75%).<br><br>
+      <strong>2.</strong> 10-godišnji Treasury prinos privlači strani kapital u SAD.<br><br>
+      <strong>3.</strong> "Safe haven" status — u nesigurnosti svijet bježi u dolar.<br><br>
+      <strong>4.</strong> DXY (Dollar Index) mjeri jačinu dolara prema košarici valuta — ključni indikator.
     </p>
   </div>
 
-</div><!-- /grid -->
+</div>
 
-<p class="update-time">Live graf osvježava svake sekunde | Detaljni graf: TradingView | Vijesti: DailyFX | Kalendar: Investing.com</p>
+<div class="footer">
+  Podaci: TradingView (stvarne cijene uživo) | Vijesti: NewsData.io | Graf: TradingView | Kalendar: Investing.com
+</div>
 
-</div><!-- /page-wrap -->
+</div>
 
-<!-- TradingView -->
+<!-- TradingView EUR/USD Chart -->
 <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 <script type="text/javascript">
   new TradingView.widget({
@@ -481,334 +364,79 @@
   });
 </script>
 
+<!-- News Script -->
 <script>
-  // ===== LIVE CHART & TICKING PRICE (TradingView style) =====
-  const canvas = document.getElementById('liveChart');
-  const ctx = canvas.getContext('2d');
-  let priceHistory = [];
-  const MAX_POINTS = 180; // 3 minute povijesti (svake sekunde)
+  const NEWSDATA_API_KEY = 'pub_835e4991c89c449c91917e81e63b7dee';
 
-  let baseRate = 1.0850;
-  let currentRate = 1.0850;
-  let openRate = 1.0850;
-  let lastRealRate = null;
-  let tickCount = 0;
-
-  function resizeCanvas() {
-    const wrap = canvas.parentElement;
-    canvas.width = wrap.clientWidth * window.devicePixelRatio;
-    canvas.height = wrap.clientHeight * window.devicePixelRatio;
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-    canvas.style.width = wrap.clientWidth + 'px';
-    canvas.style.height = wrap.clientHeight + 'px';
+  function setStatus(id, text, type) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = text;
+    el.className = 'status-pill ' + (type || '');
   }
-  resizeCanvas();
-  window.addEventListener('resize', () => { resizeCanvas(); drawChart(); });
 
-  async function fetchRealRate() {
+  async function loadNewsData() {
+    const box = document.getElementById('newsBox');
     try {
-      const res = await fetch('https://api.exchangerate-api.com/v4/latest/EUR');
-      const data = await res.json();
-      const real = data.rates.USD;
-      lastRealRate = real;
-      baseRate = real;
-      currentRate = real;
-      openRate = real;
-      return real;
-    } catch (e) {
-      return null;
-    }
-  }
+      const url = `https://newsdata.io/api/1/news?apikey=${NEWSDATA_API_KEY}&q=forex%20OR%20USD%20OR%20%22Federal%20Reserve%22%20OR%20%22interest%20rates%22&language=en&category=business&size=5`;
+      const r = await fetch(url);
+      const d = await r.json();
+      if (d.status !== 'success' || !d.results || d.results.length === 0) throw new Error('No results');
 
-  // Realistican forex tick — mikro-pip kretanje kao na TradingView
-  function tickPrice() {
-    tickCount++;
-    // Volatilnost: ±0.00001 do ±0.00005 po ticku (1-5 mikro-pipa)
-    // Ponekad ide u istom smjeru 2-3 ticka za realism
-    const momentum = tickCount % 8 < 3 ? 1.5 : 1.0; // kratkotrajni trend
-    const volatility = 0.000025 * momentum;
-    const change = (Math.random() - 0.48) * volatility * 2; // 0.48 = blagi bullish bias
-    currentRate += change;
-    // Drži unutar ±0.0020 od base rate
-    if (Math.abs(currentRate - baseRate) > 0.0020) {
-      const pull = (baseRate - currentRate) * 0.1;
-      currentRate += pull;
-    }
-    return currentRate;
-  }
-
-  function drawChart() {
-    const w = canvas.parentElement.clientWidth;
-    const h = canvas.parentElement.clientHeight;
-    ctx.clearRect(0, 0, w, h);
-
-    if (priceHistory.length < 2) {
-      ctx.fillStyle = '#8e8e93';
-      ctx.font = '14px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('Učitavanje povijesti cijena...', w/2, h/2);
-      return;
-    }
-
-    const prices = priceHistory.map(p => p.price);
-    const minP = Math.min(...prices);
-    const maxP = Math.max(...prices);
-    const range = maxP - minP || 0.0001;
-    const padding = Math.max(range * 0.15, 0.0003);
-    const yMin = minP - padding;
-    const yMax = maxP + padding;
-    const yRange = yMax - yMin;
-
-    // Grid lines
-    ctx.strokeStyle = '#e5e5ea';
-    ctx.lineWidth = 1;
-    for (let i = 0; i <= 4; i++) {
-      const y = h - 28 - (i / 4) * (h - 48);
-      ctx.beginPath();
-      ctx.moveTo(56, y);
-      ctx.lineTo(w - 8, y);
-      ctx.stroke();
-      const priceLabel = (yMin + (i / 4) * yRange).toFixed(5);
-      ctx.fillStyle = '#c7c7cc';
-      ctx.font = '10px sans-serif';
-      ctx.textAlign = 'right';
-      ctx.fillText(priceLabel.replace('.', ','), 52, y + 3);
-    }
-
-    const stepX = (w - 64) / (MAX_POINTS - 1);
-    const startIdx = Math.max(0, priceHistory.length - MAX_POINTS);
-    const visible = priceHistory.slice(startIdx);
-
-    const isUp = visible[visible.length-1].price >= visible[0].price;
-    const lineColor = isUp ? '#34c759' : '#ff3b30';
-
-    // Gradient fill
-    const grad = ctx.createLinearGradient(0, 0, 0, h);
-    grad.addColorStop(0, isUp ? 'rgba(52,199,89,0.10)' : 'rgba(255,59,48,0.10)');
-    grad.addColorStop(1, 'rgba(255,255,255,0)');
-
-    ctx.beginPath();
-    visible.forEach((pt, i) => {
-      const x = 56 + i * stepX;
-      const y = h - 28 - ((pt.price - yMin) / yRange) * (h - 48);
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    });
-    ctx.lineTo(56 + (visible.length - 1) * stepX, h - 6);
-    ctx.lineTo(56, h - 6);
-    ctx.closePath();
-    ctx.fillStyle = grad;
-    ctx.fill();
-
-    // Stroke line — glatka
-    ctx.beginPath();
-    ctx.strokeStyle = lineColor;
-    ctx.lineWidth = 2;
-    ctx.lineJoin = 'round';
-    ctx.lineCap = 'round';
-    visible.forEach((pt, i) => {
-      const x = 56 + i * stepX;
-      const y = h - 28 - ((pt.price - yMin) / yRange) * (h - 48);
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    });
-    ctx.stroke();
-
-    // Current price dot + glow (kao na TradingView)
-    const lastX = 56 + (visible.length - 1) * stepX;
-    const lastY = h - 28 - ((visible[visible.length-1].price - yMin) / yRange) * (h - 48);
-
-    // Outer glow
-    ctx.beginPath();
-    ctx.arc(lastX, lastY, 16, 0, Math.PI * 2);
-    ctx.fillStyle = isUp ? 'rgba(52,199,89,0.08)' : 'rgba(255,59,48,0.08)';
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.arc(lastX, lastY, 10, 0, Math.PI * 2);
-    ctx.fillStyle = isUp ? 'rgba(52,199,89,0.15)' : 'rgba(255,59,48,0.15)';
-    ctx.fill();
-
-    // Dot
-    ctx.beginPath();
-    ctx.arc(lastX, lastY, 5, 0, Math.PI * 2);
-    ctx.fillStyle = lineColor;
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(lastX, lastY, 5, 0, Math.PI * 2);
-    ctx.strokeStyle = '#fff';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    // Time labels
-    ctx.fillStyle = '#c7c7cc';
-    ctx.font = '10px sans-serif';
-    ctx.textAlign = 'center';
-    const firstTime = new Date(visible[0].time);
-    const lastTime = new Date(visible[visible.length-1].time);
-    ctx.fillText(firstTime.toLocaleTimeString('hr-HR', {hour:'2-digit', minute:'2-digit'}), 56, h - 6);
-    ctx.fillText(lastTime.toLocaleTimeString('hr-HR', {hour:'2-digit', minute:'2-digit'}), w - 20, h - 6);
-
-    // Range
-    document.getElementById('chartRange').textContent =
-      'Min: ' + minP.toFixed(5).replace('.', ',') + ' | Max: ' + maxP.toFixed(5).replace('.', ',');
-  }
-
-  function updateUI(rate) {
-    const chartPrice = document.getElementById('chartPrice');
-    const chartPill = document.getElementById('chartPill');
-
-    const oldText = chartPrice.textContent;
-    chartPrice.textContent = rate.toFixed(5).replace('.', ',');
-
-    const change = rate - openRate;
-    const pct = (change / openRate * 100);
-    const sign = change >= 0 ? '+' : '';
-    chartPill.textContent = sign + change.toFixed(5).replace('.', ',') + ' (' + sign + pct.toFixed(3) + '%)';
-
-    if (change >= 0) {
-      chartPrice.className = 'chart-price up';
-      chartPill.className = 'chart-pill up';
-    } else {
-      chartPrice.className = 'chart-price down';
-      chartPill.className = 'chart-pill down';
-    }
-
-    // Metric box
-    const el = document.getElementById('eurusd');
-    const newText = rate.toFixed(5).replace('.', ',');
-    if (oldText !== '—' && oldText !== newText) {
-      const oldVal = parseFloat(oldText.replace(',', '.'));
-      el.classList.remove('flash-up', 'flash-down');
-      if (rate > oldVal) el.classList.add('flash-up');
-      else el.classList.add('flash-down');
-      setTimeout(() => el.classList.remove('flash-up', 'flash-down'), 300);
-    }
-    el.textContent = newText;
-
-    const now = new Date();
-    document.getElementById('eurusdChange').textContent = now.toLocaleTimeString('hr-HR');
-    document.getElementById('eurusdChange').className = 'metric-change neutral';
-    document.getElementById('eurusdDate').textContent = 'Live (sync svakih 2min)';
-  }
-
-  function tick() {
-    const rate = tickPrice();
-    priceHistory.push({ price: rate, time: Date.now() });
-    if (priceHistory.length > MAX_POINTS) priceHistory.shift();
-    drawChart();
-    updateUI(rate);
-  }
-
-  async function init() {
-    const real = await fetchRealRate();
-    if (real) {
-      for (let i = MAX_POINTS - 1; i >= 0; i--) {
-        const t = Date.now() - i * 1000;
-        // Realisticna povijest s malim varijacijama
-        let sim = real;
-        for (let j = 0; j < i; j++) {
-          sim += (Math.random() - 0.48) * 0.00004;
-        }
-        priceHistory.push({ price: sim, time: t });
-      }
-      currentRate = priceHistory[priceHistory.length-1].price;
-      openRate = priceHistory[0].price;
-    } else {
-      for (let i = MAX_POINTS - 1; i >= 0; i--) {
-        const t = Date.now() - i * 1000;
-        priceHistory.push({ price: baseRate, time: t });
-      }
-    }
-    drawChart();
-    updateUI(currentRate);
-  }
-
-  // Resync
-  setInterval(async () => {
-    const real = await fetchRealRate();
-    if (real) {
-      const diff = real - currentRate;
-      currentRate += diff * 0.2;
-      baseRate = real;
-    }
-  }, 120000);
-
-  // Treasury
-  async function fetchTreasury() {
-    try {
-      const url = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/daily_treasury_yield_curve?fields=record_date,y2&sort=-record_date&page[size]=1';
-      const res = await fetch(url);
-      const data = await res.json();
-      const record = data.data[0];
-      const yieldVal = parseFloat(record.y2);
-      const date = record.record_date;
-      document.getElementById('treasury').textContent = yieldVal.toFixed(2).replace('.', ',') + '%';
-      document.getElementById('treasuryChange').textContent = new Date(date).toLocaleDateString('hr-HR');
-      document.getElementById('treasuryChange').className = 'metric-change neutral';
-      document.getElementById('treasuryDate').textContent = 'Izvor: treasury.gov';
-    } catch (e) {
-      document.getElementById('treasuryChange').textContent = 'Offline';
-      document.getElementById('treasuryChange').className = 'metric-change error';
-    }
-  }
-
-  // News
-  async function fetchNews() {
-    const container = document.getElementById('newsContainer');
-    try {
-      const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://www.dailyfx.com/feeds/forex-news');
-      const data = await res.json();
-      if (data.status !== 'ok' || !data.items) throw new Error('No data');
-      let html = '<div class="news-list">';
-      data.items.slice(0, 6).forEach(item => {
-        const date = new Date(item.pubDate);
-        const timeStr = date.toLocaleDateString('hr-HR') + ' ' + date.toLocaleTimeString('hr-HR', {hour:'2-digit', minute:'2-digit'});
-        html += `
-          <div class="news-item">
-            <a href="${item.link}" target="_blank" class="news-title">${item.title}</a>
-            <div class="news-meta">${timeStr} — DailyFX</div>
-          </div>
-        `;
+      let h = '<div>';
+      d.results.forEach(it => {
+        const dt = new Date(it.pubDate);
+        const source = it.source_id || 'News';
+        h += `<div class="news-item"><a href="${it.link}" target="_blank" class="news-title">${it.title}</a>`;
+        h += `<div class="news-meta">${dt.toLocaleDateString('hr-HR')} ${dt.toLocaleTimeString('hr-HR', {hour:'2-digit', minute:'2-digit'})} — ${source}</div></div>`;
       });
-      html += '</div>';
-      container.innerHTML = html;
+      h += '</div>';
+      box.innerHTML = h;
+      setStatus('stNews', 'Vijesti: NewsData.io', 'ok');
     } catch (e) {
-      try {
-        const res2 = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://feeds.bbci.co.uk/news/business/rss.xml');
-        const data2 = await res2.json();
-        let html = '<div class="news-list">';
-        data2.items.slice(0, 6).forEach(item => {
-          const date = new Date(item.pubDate);
-          const timeStr = date.toLocaleDateString('hr-HR');
-          html += `
-            <div class="news-item">
-              <a href="${item.link}" target="_blank" class="news-title">${item.title}</a>
-              <div class="news-meta">${timeStr} — BBC Business</div>
-            </div>
-          `;
-        });
-        html += '</div>';
-        container.innerHTML = html;
-      } catch (e2) {
-        container.innerHTML = '<div class="news-error">Vijesti trenutno nedostupne.</div>';
-      }
+      setStatus('stNews', 'Vijesti: DailyFX (fallback)', 'warn');
+      loadDailyFXNews();
     }
   }
 
-  function pickScenario(el, idx) {
+  async function loadDailyFXNews() {
+    const box = document.getElementById('newsBox');
+    try {
+      const r = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://www.dailyfx.com/feeds/forex-news');
+      const d = await r.json();
+      let h = '<div>';
+      d.items.slice(0, 5).forEach(it => {
+        const dt = new Date(it.pubDate);
+        h += `<div class="news-item"><a href="${it.link}" target="_blank" class="news-title">${it.title}</a>`;
+        h += `<div class="news-meta">${dt.toLocaleDateString('hr-HR')} ${dt.toLocaleTimeString('hr-HR', {hour:'2-digit', minute:'2-digit'})} — DailyFX</div></div>`;
+      });
+      h += '</div>';
+      box.innerHTML = h;
+    } catch (e) {
+      box.innerHTML = '<div style="font-size:13px;color:#ff3b30;padding:8px 0;">Vijesti trenutno nedostupne.</div>';
+      setStatus('stNews', 'Vijesti: greška', 'err');
+    }
+  }
+
+  function loadCalendar() {
+    const box = document.getElementById('calBox');
+    const iframe = document.createElement('iframe');
+    iframe.src = 'https://sslecal2.investing.com?columns=exc_flags,exc_currency,exc_importance,exc_actual,exc_forecast,exc_previous&features=datepicker,timezone&countries=25,32,6,37,72,22,17,39,14,10,35,43,56,36,110,11,26,12,4,5&calType=week&timeZone=8&lang=1';
+    iframe.style.width = '100%';
+    iframe.style.height = '100%';
+    iframe.style.border = 'none';
+    box.innerHTML = '';
+    box.appendChild(iframe);
+  }
+
+  function sel(el) {
     document.querySelectorAll('.scenario').forEach(s => s.classList.remove('active'));
     el.classList.add('active');
   }
 
-  // Start
-  init();
-  setInterval(tick, 1000); // SVAKE SEKUNDE!
-  fetchTreasury();
-  fetchNews();
-  setInterval(fetchTreasury, 300000);
-  setInterval(fetchNews, 300000);
+  loadCalendar();
+  loadNewsData();
+  setInterval(loadNewsData, 300000);
 </script>
 
 </body>
