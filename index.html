@@ -97,18 +97,14 @@
   .fed-label { color: #636366; }
   .fed-val { font-weight: 500; font-variant-numeric: tabular-nums; }
 
-  /* Chart */
-  .chart-wrap {
+  /* TradingView widget */
+  .tv-widget {
     border-radius: 10px;
     overflow: hidden;
     border: 1px solid #e5e5ea;
-    background: #fff;
   }
-  .chart-wrap iframe {
-    width: 100%;
-    height: 450px;
-    border: none;
-    display: block;
+  .tv-widget > div {
+    width: 100% !important;
   }
 
   /* Calendar iframe */
@@ -143,9 +139,7 @@
     display: block;
     line-height: 1.4;
   }
-  .news-title:hover {
-    color: #007aff;
-  }
+  .news-title:hover { color: #007aff; }
   .news-meta {
     font-size: 11px;
     color: #8e8e93;
@@ -191,9 +185,7 @@
   .dot-blue { background: #007aff; }
   .dot-red { background: #ff3b30; }
   .dot-green { background: #34c759; }
-  .scenario-text {
-    flex: 1;
-  }
+  .scenario-text { flex: 1; }
   .scenario-title {
     font-size: 14px;
     font-weight: 500;
@@ -217,7 +209,6 @@
     line-height: 1.5;
     margin-top: 4px;
   }
-
   .update-time {
     text-align: center;
     font-size: 11px;
@@ -251,13 +242,11 @@
   </div>
 </div>
 
-<!-- EUR/USD graf uživo — TradingView -->
+<!-- EUR/USD graf — TradingView službeni widget -->
 <div class="card">
   <div class="card-title">EUR/USD graf — uživo</div>
-  <div class="chart-wrap">
-    <iframe src="https://www.tradingview.com/widgetembed/?symbol=FX%3AEURUSD&interval=60&hidesidetoolbar=0&hidetoptoolbar=0&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=%5B%5D&hideideas=1&theme=Light&style=1&timezone=Europe%2FZagreb&withdateranges=1&showpopupbutton=1&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=hr" allowtransparency="true" scrolling="no" allowfullscreen=""></iframe>
-  </div>
-  <p class="note">TradingView uživo graf. Možeš mijenjati interval (1H, 4H, 1D), zoomati i pomicati. Ako se ne prikaže, osvježi stranicu.</p>
+  <div class="tv-widget" id="tvChart"></div>
+  <p class="note">TradingView uživo graf. Možeš mijenjati interval, zoomati i pomicati.</p>
 </div>
 
 <!-- FED podaci — statički -->
@@ -343,6 +332,29 @@
 </div>
 
 <p class="update-time">EUR/USD i Treasury: auto-ažuriranje | Graf: TradingView | Vijesti: DailyFX | Kalendar: Investing.com</p>
+
+<!-- TradingView skripta -->
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+  new TradingView.widget({
+    "container_id": "tvChart",
+    "width": "100%",
+    "height": 420,
+    "symbol": "FX:EURUSD",
+    "interval": "60",
+    "timezone": "Europe/Zagreb",
+    "theme": "Light",
+    "style": "1",
+    "locale": "hr",
+    "toolbar_bg": "#f1f3f6",
+    "enable_publishing": false,
+    "hide_top_toolbar": false,
+    "hide_legend": false,
+    "save_image": false,
+    "hideideas": true,
+    "studies": []
+  });
+</script>
 
 <script>
   let currentRate = 1.0850;
