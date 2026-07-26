@@ -110,4 +110,332 @@
   .explain-text { font-size: 13px; color: #3a3a3c; line-height: 1.65; }
   .explain-text strong { color: #1c1c1e; font-weight: 600; }
   .footer { text-align: center; font-size: 11px; color: #c7c7cc; margin-top: 20px; padding-bottom: 16px; }
-  .
+  .status-bar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .status-pill {
+    font-size: 11px; padding: 3px 10px; border-radius: 12px;
+    background: #f2f2f7; color: #636366;
+  }
+  .status-pill.ok { background: #e8f5e9; color: #34c759; }
+</style>
+<base target="_blank">
+</head>
+<body>
+
+<div class="page-wrap">
+
+<header>
+  <div>
+    <h1>USD Tracker</h1>
+    <div class="subtitle">FOMC 28–29. srpnja 2026.</div>
+  </div>
+  <div class="live-badge">Live</div>
+</header>
+
+<div class="status-bar">
+  <div class="status-pill ok">Podaci: TradingView (uživo)</div>
+  <div class="status-pill" id="stNews">Vijesti: učitavanje...</div>
+</div>
+
+<div class="grid">
+
+  <!-- BRZI PODACI — TradingView widgeti -->
+  <div class="card span-2">
+    <div class="card-title">
+      <span>Brzi podaci — uživo</span>
+      <span style="font-size:10px;color:#c7c7cc;text-transform:none;">Izvor: TradingView</span>
+    </div>
+    <div class="tv-widgets-grid">
+
+      <!-- EUR/USD -->
+      <div class="tv-widget-box">
+        <div class="tradingview-widget-container" style="height:100%;width:100%;">
+          <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+          {
+            "symbol": "OANDA:EURUSD",
+            "width": "100%",
+            "height": "100%",
+            "colorTheme": "light",
+            "isTransparent": true,
+            "locale": "en"
+          }
+          </script>
+        </div>
+      </div>
+
+      <!-- Zlato -->
+      <div class="tv-widget-box">
+        <div class="tradingview-widget-container" style="height:100%;width:100%;">
+          <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+          {
+            "symbol": "OANDA:XAUUSD",
+            "width": "100%",
+            "height": "100%",
+            "colorTheme": "light",
+            "isTransparent": true,
+            "locale": "en"
+          }
+          </script>
+        </div>
+      </div>
+
+      <!-- WTI Nafta -->
+      <div class="tv-widget-box">
+        <div class="tradingview-widget-container" style="height:100%;width:100%;">
+          <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+          {
+            "symbol": "TVC:USOIL",
+            "width": "100%",
+            "height": "100%",
+            "colorTheme": "light",
+            "isTransparent": true,
+            "locale": "en"
+          }
+          </script>
+        </div>
+      </div>
+
+      <!-- DXY -->
+      <div class="tv-widget-box">
+        <div class="tradingview-widget-container" style="height:100%;width:100%;">
+          <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+          {
+            "symbol": "TVC:DXY",
+            "width": "100%",
+            "height": "100%",
+            "colorTheme": "light",
+            "isTransparent": true,
+            "locale": "en"
+          }
+          </script>
+        </div>
+      </div>
+
+      <!-- 10Y Treasury -->
+      <div class="tv-widget-box">
+        <div class="tradingview-widget-container" style="height:100%;width:100%;">
+          <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+          {
+            "symbol": "TVC:US10Y",
+            "width": "100%",
+            "height": "100%",
+            "colorTheme": "light",
+            "isTransparent": true,
+            "locale": "en"
+          }
+          </script>
+        </div>
+      </div>
+
+      <!-- USD/JPY -->
+      <div class="tv-widget-box">
+        <div class="tradingview-widget-container" style="height:100%;width:100%;">
+          <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+          {
+            "symbol": "OANDA:USDJPY",
+            "width": "100%",
+            "height": "100%",
+            "colorTheme": "light",
+            "isTransparent": true,
+            "locale": "en"
+          }
+          </script>
+        </div>
+      </div>
+
+    </div>
+    <p class="note">Sve cijene su stvarne i osvježavaju se automatski preko TradingView-a.</p>
+  </div>
+
+  <!-- TRADINGVIEW GRAF EUR/USD -->
+  <div class="card">
+    <div class="card-title">EUR/USD graf (TradingView)</div>
+    <div class="tv-box" id="tvChart"></div>
+    <p class="note">Profesionalni graf. Mijenjaj interval, zoomaj, dodaj indikatore.</p>
+  </div>
+
+  <!-- VIJESTI UŽIVO -->
+  <div class="card">
+    <div class="card-title">Vijesti uživo</div>
+    <div id="newsBox">
+      <div style="font-size:13px;color:#8e8e93;font-style:italic;padding:8px 0;">Učitavanje...</div>
+    </div>
+  </div>
+
+  <!-- FED -->
+  <div class="card">
+    <div class="card-title">Federal Reserve</div>
+    <div class="fed-line"><span class="fed-k">Fed funds rate</span><span class="fed-v">3,50 – 3,75%</span></div>
+    <div class="fed-line"><span class="fed-k">Kamata na rezerve</span><span class="fed-v">3,65%</span></div>
+    <div class="fed-line"><span class="fed-k">10Y prinos</span><span class="fed-v" id="fedTre">—</span></div>
+    <div class="fed-line"><span class="fed-k">Sljedeći FOMC</span><span class="fed-v">28–29. srpnja</span></div>
+    <p class="note">Kamate se ažuriraju ručno nakon FOMC sastanka.</p>
+  </div>
+
+  <!-- CALENDAR -->
+  <div class="card">
+    <div class="card-title">Ekonomski kalendar</div>
+    <div class="cal-box" id="calBox">
+      <div class="cal-fallback">
+        Ako se kalendar ne prikaže, klikni ovdje:<br><br>
+        <a href="https://sslecal2.investing.com?columns=exc_flags,exc_currency,exc_importance,exc_actual,exc_forecast,exc_previous&features=datepicker,timezone&countries=25,32,6,37,72,22,17,39,14,10,35,43,56,36,110,11,26,12,4,5&calType=week&timeZone=8&lang=1" target="_blank">
+          Otvori Investing.com kalendar
+        </a>
+      </div>
+    </div>
+    <p class="note">Crvena = visoka važnost. Ako iframe ne radi, koristi link iznad.</p>
+  </div>
+
+  <!-- SCENARIOS -->
+  <div class="card">
+    <div class="card-title">Scenariji FOMC 29. srpnja</div>
+    <div class="scenario active" onclick="sel(this)">
+      <div class="sc-dot sc-blue"></div>
+      <div class="sc-text">
+        <div class="sc-title">Zadržati stope</div>
+        <div class="sc-desc">Powell hawkish</div>
+      </div>
+      <div class="sc-impact" style="color:#ff3b30;">EUR/USD<br>1,07–1,08</div>
+    </div>
+    <div class="scenario" onclick="sel(this)">
+      <div class="sc-dot sc-red"></div>
+      <div class="sc-text">
+        <div class="sc-title">Podići kamate</div>
+        <div class="sc-desc">Na 3,75–4,00%</div>
+      </div>
+      <div class="sc-impact" style="color:#ff3b30;">EUR/USD<br>~1,07</div>
+    </div>
+    <div class="scenario" onclick="sel(this)">
+      <div class="sc-dot sc-green"></div>
+      <div class="sc-text">
+        <div class="sc-title">Signalizirati rezanje</div>
+        <div class="sc-desc">Powell dovish</div>
+      </div>
+      <div class="sc-impact" style="color:#34c759;">EUR/USD<br>1,10–1,11</div>
+    </div>
+  </div>
+
+  <!-- ZASTO DOLAR JACA -->
+  <div class="card">
+    <div class="card-title">Zašto dolar jača?</div>
+    <p class="explain-text">
+      <strong>1.</strong> FED drži visoke kamate (3,50–3,75%) dok ECB stagnira (~2,50–2,75%).<br><br>
+      <strong>2.</strong> 10-godišnji Treasury prinos privlači strani kapital u SAD.<br><br>
+      <strong>3.</strong> "Safe haven" status — u nesigurnosti svijet bježi u dolar.<br><br>
+      <strong>4.</strong> DXY (Dollar Index) mjeri jačinu dolara prema košarici valuta — ključni indikator.
+    </p>
+  </div>
+
+</div>
+
+<div class="footer">
+  Podaci: TradingView (stvarne cijene uživo) | Vijesti: NewsData.io | Graf: TradingView | Kalendar: Investing.com
+</div>
+
+</div>
+
+<!-- TradingView EUR/USD Chart -->
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+  new TradingView.widget({
+    "container_id": "tvChart",
+    "width": "100%",
+    "height": 420,
+    "symbol": "FX:EURUSD",
+    "interval": "60",
+    "timezone": "Europe/Zagreb",
+    "theme": "Light",
+    "style": "1",
+    "locale": "hr",
+    "toolbar_bg": "#f1f3f6",
+    "enable_publishing": false,
+    "hide_top_toolbar": false,
+    "hide_legend": false,
+    "save_image": false,
+    "hideideas": true,
+    "studies": []
+  });
+</script>
+
+<!-- News Script -->
+<script>
+  const NEWSDATA_API_KEY = 'pub_835e4991c89c449c91917e81e63b7dee';
+
+  function setStatus(id, text, type) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = text;
+    el.className = 'status-pill ' + (type || '');
+  }
+
+  async function loadNewsData() {
+    const box = document.getElementById('newsBox');
+    try {
+      const url = `https://newsdata.io/api/1/news?apikey=${NEWSDATA_API_KEY}&q=forex%20OR%20USD%20OR%20%22Federal%20Reserve%22%20OR%20%22interest%20rates%22&language=en&category=business&size=5`;
+      const r = await fetch(url);
+      const d = await r.json();
+      if (d.status !== 'success' || !d.results || d.results.length === 0) throw new Error('No results');
+
+      let h = '<div>';
+      d.results.forEach(it => {
+        const dt = new Date(it.pubDate);
+        const source = it.source_id || 'News';
+        h += `<div class="news-item"><a href="${it.link}" target="_blank" class="news-title">${it.title}</a>`;
+        h += `<div class="news-meta">${dt.toLocaleDateString('hr-HR')} ${dt.toLocaleTimeString('hr-HR', {hour:'2-digit', minute:'2-digit'})} — ${source}</div></div>`;
+      });
+      h += '</div>';
+      box.innerHTML = h;
+      setStatus('stNews', 'Vijesti: NewsData.io', 'ok');
+    } catch (e) {
+      setStatus('stNews', 'Vijesti: DailyFX (fallback)', 'warn');
+      loadDailyFXNews();
+    }
+  }
+
+  async function loadDailyFXNews() {
+    const box = document.getElementById('newsBox');
+    try {
+      const r = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://www.dailyfx.com/feeds/forex-news');
+      const d = await r.json();
+      let h = '<div>';
+      d.items.slice(0, 5).forEach(it => {
+        const dt = new Date(it.pubDate);
+        h += `<div class="news-item"><a href="${it.link}" target="_blank" class="news-title">${it.title}</a>`;
+        h += `<div class="news-meta">${dt.toLocaleDateString('hr-HR')} ${dt.toLocaleTimeString('hr-HR', {hour:'2-digit', minute:'2-digit'})} — DailyFX</div></div>`;
+      });
+      h += '</div>';
+      box.innerHTML = h;
+    } catch (e) {
+      box.innerHTML = '<div style="font-size:13px;color:#ff3b30;padding:8px 0;">Vijesti trenutno nedostupne.</div>';
+      setStatus('stNews', 'Vijesti: greška', 'err');
+    }
+  }
+
+  function loadCalendar() {
+    const box = document.getElementById('calBox');
+    const iframe = document.createElement('iframe');
+    iframe.src = 'https://sslecal2.investing.com?columns=exc_flags,exc_currency,exc_importance,exc_actual,exc_forecast,exc_previous&features=datepicker,timezone&countries=25,32,6,37,72,22,17,39,14,10,35,43,56,36,110,11,26,12,4,5&calType=week&timeZone=8&lang=1';
+    iframe.style.width = '100%';
+    iframe.style.height = '100%';
+    iframe.style.border = 'none';
+    box.innerHTML = '';
+    box.appendChild(iframe);
+  }
+
+  function sel(el) {
+    document.querySelectorAll('.scenario').forEach(s => s.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  loadCalendar();
+  loadNewsData();
+  setInterval(loadNewsData, 300000);
+</script>
+
+</body>
+</html>
