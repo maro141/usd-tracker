@@ -102,10 +102,11 @@
     border-radius: 10px;
     overflow: hidden;
     border: 1px solid #e5e5ea;
+    background: #fff;
   }
   .chart-wrap iframe {
     width: 100%;
-    height: 420px;
+    height: 450px;
     border: none;
     display: block;
   }
@@ -250,13 +251,13 @@
   </div>
 </div>
 
-<!-- EUR/USD graf uživo -->
+<!-- EUR/USD graf uživo — TradingView -->
 <div class="card">
-  <div class="card-title">EUR/USD graf — uživo (TradingView)</div>
+  <div class="card-title">EUR/USD graf — uživo</div>
   <div class="chart-wrap">
-    <iframe src="https://www.tradingview.com/widgetembed/?frameElementId=tradingview_eurusd&symbol=FX_IDC%3AEURUSD&interval=15&hidesidetoolbar=1&hidetoptoolbar=1&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=[]&hideideas=1&theme=light&style=1&timezone=Europe%2FZagreb&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=hr&utm_source=maro141.github.io&utm_medium=widget&utm_campaign=chart&utm_term=FX_IDC%3AEURUSD" scrolling="no"></iframe>
+    <iframe src="https://www.tradingview.com/widgetembed/?symbol=FX%3AEURUSD&interval=60&hidesidetoolbar=0&hidetoptoolbar=0&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=%5B%5D&hideideas=1&theme=Light&style=1&timezone=Europe%2FZagreb&withdateranges=1&showpopupbutton=1&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=hr" allowtransparency="true" scrolling="no" allowfullscreen=""></iframe>
   </div>
-  <p class="note">15-minutna svijeća. Možeš zoomati, pomicati i promijeniti interval (1H, 4H, 1D) direktno na grafu.</p>
+  <p class="note">TradingView uživo graf. Možeš mijenjati interval (1H, 4H, 1D), zoomati i pomicati. Ako se ne prikaže, osvježi stranicu.</p>
 </div>
 
 <!-- FED podaci — statički -->
@@ -386,7 +387,6 @@
       const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://www.dailyfx.com/feeds/forex-news');
       const data = await res.json();
       if (data.status !== 'ok' || !data.items) throw new Error('No data');
-
       let html = '<div class="news-list">';
       data.items.slice(0, 6).forEach(item => {
         const date = new Date(item.pubDate);
